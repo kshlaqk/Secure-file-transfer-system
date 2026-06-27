@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>安全文件传输系统 - 管理后台</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- 登录界面 -->
+    <div id="loginPage" class="login-page">
+        <div class="login-container">
+            <h1>安全文件传输系统</h1>
+            <h2>管理后台</h2>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label>用户名:</label>
+                    <input type="text" id="loginUsername" required autocomplete="username">
+                </div>
+                <div class="form-group">
+                    <label>密码:</label>
+                    <input type="password" id="loginPassword" required autocomplete="current-password">
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">登录</button>
+                <div id="loginError" class="error-message"></div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 主界面 -->
+    <div id="mainApp" style="display: none;">
+        <!-- 顶部导航栏 -->
+        <header class="header">
+            <div class="header-content">
+                <h1>安全文件传输系统 - 管理后台</h1>
+                <div class="header-actions">
+                    <button id="changePasswordBtn" class="btn btn-secondary">修改密码</button>
+                    <span id="adminName"></span>
+                    <button id="logoutBtn" class="btn btn-secondary">登出</button>
+                </div>
+            </div>
+        </header>
+
+        <!-- 导航栏 -->
+        <nav class="top-nav">
+            <button class="nav-btn active" data-page="pcManagementPage">PC管理</button>
+            <button class="nav-btn" data-page="policyManagementPage">策略管理</button>
+            <button class="nav-btn" data-page="whitelistManagementPage">白名单管理</button>
+        </nav>
+
+        <!-- 主内容区 -->
+        <main class="main-content">
+            <!-- PC管理页面 -->
+            <div id="pcManagementPage" class="page active">
+                <div class="page-header">
+                    <h2>PC管理</h2>
+                    <button id="refreshClientsBtn" class="btn btn-primary">
+                        <span>🔄</span> 刷新PC列表
+                    </button>
+                </div>
+                <div id="pcCardsContainer" class="pc-cards-container">
+                    <div class="loading">加载中...</div>
+                </div>
+            </div>
+
+            <!-- 策略管理页面 -->
+            <div id="policyManagementPage" class="page">
+                <div class="page-header">
+                    <h2>策略管理</h2>
+                </div>
+                <div class="policy-management-form">
+                    <div class="form-group">
+                        <label>PC名称（使用人）:</label>
+                        <input type="text" id="policyPcInput" class="form-control" 
+                               placeholder="请输入PC使用人名称">
+                        <small>输入PC使用人名称，如果PC不存在会提示错误</small>
+                    </div>
+                    <div id="policyFormContainer">
+                        <div class="form-group">
+                            <label>受保护扩展名（用分号分隔）:</label>
+                            <input type="text" id="policyExtensions" 
+                                   placeholder="例如: .docx;.xlsx;.pdf">
+                            <small>多个扩展名用分号(;)分隔</small>
+                        </div>
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" id="policyEncryption"> 启用加密
+                            </label>
+                        </div>
+                        <div class="form-actions">
+                            <button id="policySaveBtn" class="btn btn-primary">保存策略</button>
+                            <button id="policyCancelBtn" class="btn btn-secondary">取消</button>
+                        </div>
+                        <div id="policyError" class="error-message"></div>
+                        <div id="policySuccess" class="success-message"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 白名单管理页面 -->
+            <div id="whitelistManagementPage" class="page">
+                <div class="page-header">
+                    <h2>白名单管理</h2>
+                </div>
+                <div class="whitelist-management-form">
+                    <div class="form-group">
+                        <label>PC名称（使用人）:</label>
+                        <input type="text" id="whitelistPcInput" class="form-control" 
+                               placeholder="请输入PC使用人名称">
+                        <small>输入PC使用人名称，如果PC不存在会提示错误</small>
+                    </div>
+                    <div id="whitelistContainer">
+                        <div class="form-group">
+                            <label>添加白名单项:</label>
+                            <div class="input-group">
+                                <input type="text" id="newWhitelistPath" 
+                                       placeholder="例如: Windows\System32\notepad.exe" 
+                                       class="form-control">
+                                <button id="addWhitelistBtn" class="btn btn-primary">添加</button>
+                            </div>
+                            <small>使用路径后缀格式，例如: Windows\System32\notepad.exe</small>
+                        </div>
+                        <div class="form-group">
+                            <label>删除白名单项:</label>
+                            <div class="input-group">
+                                <input type="text" id="removeWhitelistPath" 
+                                       placeholder="例如: Windows\System32\notepad.exe" 
+                                       class="form-control">
+                                <button id="removeWhitelistBtn" class="btn btn-danger">删除</button>
+                            </div>
+                            <small>输入要删除的进程路径</small>
+                        </div>
+                        <div id="whitelistError" class="error-message"></div>
+                        <div id="whitelistSuccess" class="success-message"></div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- 修改密码模态框 -->
+    <div id="changePasswordModal" class="modal">
+        <div class="modal-content">
+            <h2>修改密码</h2>
+            <form id="changePasswordForm">
+                <div class="form-group">
+                    <label>旧密码:</label>
+                    <input type="password" id="oldPassword" required>
+                </div>
+                <div class="form-group">
+                    <label>新密码:</label>
+                    <input type="password" id="newPassword" required minlength="6">
+                    <small>密码长度至少6位</small>
+                </div>
+                <div class="form-group">
+                    <label>确认新密码:</label>
+                    <input type="password" id="confirmPassword" required minlength="6">
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">修改</button>
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('changePasswordModal')">取消</button>
+                </div>
+                <div id="changePasswordError" class="error-message"></div>
+            </form>
+        </div>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/pcManager.js"></script>
+    <script src="js/policyManager.js"></script>
+    <script src="js/whitelistManager.js"></script>
+</body>
+</html>
