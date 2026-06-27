@@ -1,0 +1,34 @@
+﻿  Building 'FltDriver' with toolset 'WindowsKernelModeDriver10.0' and the 'Universal' target platform.
+  Stamping x64\Debug\FltDriver.inf
+  Stamping [Version] section with DriverVer=01/26/2026,21.26.4.874
+D:\Secure file transfer system\FltDriver\FltDriver.inf(69-69): warning 1205: Section [MiniFilter.DriverFiles] referenced from CopyFiles and DelFiles directive.
+  Callbacks.c
+  Communication.c
+  Logger.c
+  SecureFilter.c
+  Utils.c
+  Whitelist.c
+  正在生成代码...
+  FltDriver.vcxproj -> D:\Secure file transfer system\FltDriver\x64\Debug\FltDriver.sys
+  Done Adding Additional Store
+  Successfully signed: D:\Secure file transfer system\FltDriver\x64\Debug\FltDriver.sys
+  
+  Driver is 'Universal'.
+  ........................
+  Signability test complete.
+  
+  Errors:
+  None
+  
+  Warnings:
+  None
+  
+  Catalog generation complete.
+  D:\Secure file transfer system\FltDriver\x64\Debug\FltDriver\fltdriver.cat
+  Set catalog attribute.
+  WdkVersion: 10.0.26100.0
+  Set catalog attribute.
+  WdkAssemblyVersion: 10.0.26100.6584
+  Done Adding Additional Store
+  Successfully signed: D:\Secure file transfer system\FltDriver\x64\Debug\FltDriver\fltdriver.cat
+  
